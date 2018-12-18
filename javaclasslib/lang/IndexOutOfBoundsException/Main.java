@@ -1,0 +1,1 @@
+class Main {    public static void main(String[] args) {        int[] intArray = {1, 2, 3};        intArray[3] = 10; // index out of bounds    }}

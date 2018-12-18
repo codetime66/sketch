@@ -1,0 +1,1 @@
+import java.net.URL;import java.net.MalformedURLException;class Main {    public static void main(String[] args) {        System.out.println("MalformedURLException example");        try {            URL url = new URL("funnyProt://www.test.com");        } catch (MalformedURLException e) {            e.printStackTrace();        }    }}
