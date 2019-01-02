@@ -49,7 +49,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import br.com.stelo.batch.pagamento.boleto.model.PagamentoMatera;
-import br.com.stelo.batch.pagamento.boleto.model.PagamentoMateraProc;
+import br.com.stelo.batch.pagamento.boleto.model.RegistroArquivoTiff;
 import br.com.stelo.batch.pagamento.boleto.reader.PagamentoMateraMapper;
 import br.com.stelo.batch.pagamento.boleto.reader.PagamentoMateraMapperFooter;
 import br.com.stelo.batch.pagamento.boleto.reader.PagamentoMateraMapperHeader;
@@ -93,7 +93,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 	public FlatFileItemReader<PagamentoMatera> pagamentoMateraItemReader;	
 	
 	@Autowired
-	public FlatFileItemWriter<PagamentoMateraProc> procsItemWriter;
+	public FlatFileItemWriter<RegistroArquivoTiff> procsItemWriter;
 	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
@@ -243,10 +243,10 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 
 	@Bean
 	@StepScope
-	public FlatFileItemWriter<PagamentoMateraProc> procsItemWriter() {
+	public FlatFileItemWriter<RegistroArquivoTiff> procsItemWriter() {
 		log.info("###BatchConfiguration.procsItemWriter(): ");
 
-		FlatFileItemWriter<PagamentoMateraProc> writer = new FlatFileItemWriter<PagamentoMateraProc>();
+		FlatFileItemWriter<RegistroArquivoTiff> writer = new FlatFileItemWriter<RegistroArquivoTiff>();
 		writer.setResource(new FileSystemResource(getOutputFileName()));
 		writer.setHeaderCallback(headerCallback());
 		writer.setFooterCallback(footerCallback());
@@ -265,18 +265,17 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 		return new PagamentoMateraFooterCallback();
 	}
 
-	private LineAggregator<PagamentoMateraProc> formatterLineAggregator() {
-		FormatterLineAggregator<PagamentoMateraProc> lineAggregator = new FormatterLineAggregator<>();
+	private LineAggregator<RegistroArquivoTiff> formatterLineAggregator() {
+		FormatterLineAggregator<RegistroArquivoTiff> lineAggregator = new FormatterLineAggregator<>();
 		lineAggregator.setFieldExtractor(fieldExtractor());
-		lineAggregator.setFormat("02%s%s%s%s%s%s%s%s%s%s%s");
+		lineAggregator.setFormat("30%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s");
 		return lineAggregator;
 	}
 
-	private BeanWrapperFieldExtractor<PagamentoMateraProc> fieldExtractor() {
-		BeanWrapperFieldExtractor<PagamentoMateraProc> fieldExtractor = new BeanWrapperFieldExtractor<>();
+	private BeanWrapperFieldExtractor<RegistroArquivoTiff> fieldExtractor() {
+		BeanWrapperFieldExtractor<RegistroArquivoTiff> fieldExtractor = new BeanWrapperFieldExtractor<>();
 		fieldExtractor
-				.setNames(new String[] { "status", "numeroPedidoEC", "pedidoStelo", "codigoVendedor", "codigoPagamento",
-						"valorBoleto", "dataVencimento", "origemPedido", "codigoComprador", "cpf", "emailComprador" });
+				.setNames(new String[] { "sequencial", "numOriginal", "dataTranscao", "mti", "codigoProcessamento", "codigoAutorizacao", "horaTransacao" , "numeroTerminal", "idCliente", "dataExpiracao", "codigoMoeda", "valorTransacao", "entrada", "codigoPais", "traceNumber", "rrn", "codigoPlanoVenda" , "idBranch" , "idDepartamento" , "tipoTecnologia", "posData", "metodoVerificacao", "numCartao", "sourceInterface", "fieldLength" , "field" , "codigoResposta" , "idTransacaoVisa" , "dadosRede" , "dataLiquidacao" , "idSeguranca" , "codigoIdentificacao" , "mcc", "idPromocao", "valorEntrada" , "taxaEmbarque" , "valorReembolso" , "idRequirente" , "idBin" , "idTransacao" , "taxaCambio" , "nomeEC", "dataOriginalTransacao" , "horaOriginalTransacao" , "idOriginalTransacao", "rrnOriginal" , "codigoServico" , "merchante" , "coBinGroup" , "cmsProduct" , "transactionType" , "binGroup" , "tipoConta" , "dCCIndicator" , "reconciliationAmount" , "reconciliationCurrency" , "amountAdditionals" , "amountAdditionalsCurrency" , "dCCExchangeForReconciliation" , "dCCExchangeRateWithMarkup" , "dCCExchangeRateWithoutMarkup" });
 		return fieldExtractor;
 	}
 
@@ -295,7 +294,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 	@Bean
 	public Step step1() {
 		return stepBuilderFactory.get("step1")
-				.<PagamentoMatera, PagamentoMateraProc>chunk(10)
+				.<PagamentoMatera, RegistroArquivoTiff>chunk(10)
 				.reader(pagamentoMateraItemReader)
 				.processor(processor())
 				.writer(procsItemWriter)

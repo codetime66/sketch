@@ -6,17 +6,19 @@ import lombok.Data;
 @Builder
 @Data
 public class PagamentoMateraProc{
-	public String status;
-	public String numeroPedidoEC;
-	public String pedidoStelo;
-	public String codigoVendedor;
-	public String codigoPagamento;
-	public String valorBoleto;
-	public String dataVencimento;
-	public String origemPedido;
-	public String codigoComprador;
-	public String cpf;
-	public String emailComprador;
-	
+
+	private String status;
+	private String numeroPedidoEC;
+	private String pedidoStelo;
+	private String codigoVendedor;
+	private String codigoPagamento;
+	private String valorBoleto;
+	private String dataVencimento;
+	private String origemPedido;
+	private String codigoComprador;
+	private String cpf;
+	private String emailComprador;
+		
 	private TipoRegistroMatera tipoRegistro;
+	
 }
