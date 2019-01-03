@@ -1,32 +1,32 @@
 package br.com.stelo.batch.pagamento.boleto.service;
 
-import java.math.BigInteger;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+//import java.math.BigInteger;
+//import java.text.DateFormat;
+//import java.text.SimpleDateFormat;
+//import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+//import java.util.GregorianCalendar;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.stelo.batch.helper.PagamentoStatusType;
-import br.com.stelo.batch.pagamento.boleto.model.Moeda;
-import br.com.stelo.batch.pagamento.boleto.model.Pagamento;
+//import br.com.stelo.batch.pagamento.boleto.model.Moeda;
+//import br.com.stelo.batch.pagamento.boleto.model.Pagamento;
 import br.com.stelo.batch.pagamento.boleto.model.PagamentoMatera;
-import br.com.stelo.batch.pagamento.boleto.model.Parcelamento;
-import br.com.stelo.batch.pagamento.boleto.model.Pedido;
-import br.com.stelo.batch.pagamento.boleto.model.PedidoOrigemType;
-import br.com.stelo.batch.pagamento.boleto.model.Pessoa;
-import br.com.stelo.batch.pagamento.boleto.model.TipoPagamentoType;
-import br.com.stelo.batch.pagamento.boleto.model.Transacao;
-import br.com.stelo.batch.pagamento.boleto.model.Venda;
-import br.com.stelo.batch.pagamento.boleto.repository.dao.ITransacaoDAO;
+//import br.com.stelo.batch.pagamento.boleto.model.Parcelamento;
+//import br.com.stelo.batch.pagamento.boleto.model.Pedido;
+//import br.com.stelo.batch.pagamento.boleto.model.PedidoOrigemType;
+//import br.com.stelo.batch.pagamento.boleto.model.Pessoa;
+//import br.com.stelo.batch.pagamento.boleto.model.TipoPagamentoType;
+//import br.com.stelo.batch.pagamento.boleto.model.Transacao;
+//import br.com.stelo.batch.pagamento.boleto.model.Venda;
+//import br.com.stelo.batch.pagamento.boleto.repository.dao.ITransacaoDAO;
 import br.com.stelo.batch.pagamento.boleto.repository.entity.PagamentoEntity;
 import br.com.stelo.batch.pagamento.boleto.repository.entity.PedidoEntity;
-import br.com.stelo.batch.pagamento.boleto.repository.entity.TransacaoEntity;
+//import br.com.stelo.batch.pagamento.boleto.repository.entity.TransacaoEntity;
 import br.com.stelo.batch.pagamento.boleto.repository.entity.VendaEntity;
 
 @Service
@@ -34,17 +34,17 @@ public class TransacaoService implements ITransacaoService {
 
 	private static final Logger log = LoggerFactory.getLogger(TransacaoService.class);
 
-	private static final String CODIGO_DEFAULT_TERMINAL = "0";
-	private static final String NUMERO_DEFAULT_TERMINAL = "0";
-	private static final int TIPO_MSG_COMPRA = 220;
-	private static final int TIPO_MSG_CANCELAMENTO = 420;
-	private static final String CODIGO_MOEDA = "986";
+	//private static final String CODIGO_DEFAULT_TERMINAL = "0";
+	//private static final String NUMERO_DEFAULT_TERMINAL = "0";
+	//private static final int TIPO_MSG_COMPRA = 220;
+	//private static final int TIPO_MSG_CANCELAMENTO = 420;
+	//private static final String CODIGO_MOEDA = "986";
 
-	@Autowired
-	private ITransacaoDAO transacaoDAO;
+	//@Autowired
+	//private ITransacaoDAO transacaoDAO;
 
-	@Autowired
-	private ITerminalService terminalService;
+	//@Autowired
+	//private ITerminalService terminalService;
 
 	@Override
 	public void processaPagamentoAprovado(final PagamentoMatera pagamentoMatera, final PagamentoEntity pagamentoEntity,
@@ -54,12 +54,12 @@ public class TransacaoService implements ITransacaoService {
 		pagamentoEntity.setVR_PG(pagamentoMatera.getValor());
 		pedidoEntity.setCD_STTUS_PDIDO(PagamentoStatusType.APROVADA.getValue());
 
-		insereHistoricoTransacao(pagamentoEntity, vendaEntity, pedidoEntity);
+		//insereHistoricoTransacao(pagamentoEntity, vendaEntity, pedidoEntity);
 
 		log.info("Registro processado com sucesso! " + pagamentoMatera);
 		log.info("Pagamento OK - Marcado para incluir transação e gerar TIFF nos steps seguintes...");
 	}
-
+/*
 	private void insereHistoricoTransacao(PagamentoEntity pagamentoEntity, VendaEntity vendaEntity,
 			PedidoEntity pedidoEntity) throws Exception {
 
@@ -275,5 +275,5 @@ public class TransacaoService implements ITransacaoService {
 		final Pessoa p = Pessoa.builder().idStelo(codigoVendedor).build();
 		return p;
 	}
-
+*/
 }

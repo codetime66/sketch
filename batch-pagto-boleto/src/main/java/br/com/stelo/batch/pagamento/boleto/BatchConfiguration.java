@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -104,6 +105,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 		return dataSource;
 	}
 
+//partitioner-----------------------------------------------------------------------------/	
 	@Bean("partitioner")
 	@StepScope
 	public Partitioner partitioner() {
@@ -152,9 +154,9 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 		
 		return sb.toString();		
 	}
+//end---/	
 	
-//--------------------------------------------------------------------------------------------------
-	
+//reader--------------------------------------------------------------------------------------------------/
 	@Bean
 	@StepScope
 	@Qualifier("pagamentoMateraItemReader")
@@ -232,22 +234,27 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 	public FieldSetMapper<PagamentoMatera> footerFieldSetMapper() throws Exception {
 		return new PagamentoMateraMapperFooter();
 	}
-//-----------------------------------------------------------------------------------------
+//end-----/
 
+//processor-------------------------------------------------------------------------/	
 	@Bean
+	@StepScope
 	public PagamentoMateraItemProcessor processor() {
 		return new PagamentoMateraItemProcessor();
 	}
+//end-----/
 
-//------------------------------------------------------------------------------------//
-
+//writer-------------------------------------------------------------------------/	
 	@Bean
 	@StepScope
-	public FlatFileItemWriter<RegistroArquivoTiff> procsItemWriter() {
+	public FlatFileItemWriter<RegistroArquivoTiff> procsItemWriter(@Value("#{StepExecution}") StepExecution stepExecution) {
 		log.info("###BatchConfiguration.procsItemWriter(): ");
 
+		String tiffFileName = getOutputFileName();
+		stepExecution.getExecutionContext().put("tiffFileName", tiffFileName);
+		
 		FlatFileItemWriter<RegistroArquivoTiff> writer = new FlatFileItemWriter<RegistroArquivoTiff>();
-		writer.setResource(new FileSystemResource(getOutputFileName()));
+		writer.setResource(new FileSystemResource(tiffFileName));
 		writer.setHeaderCallback(headerCallback());
 		writer.setFooterCallback(footerCallback());
 		writer.setLineAggregator(formatterLineAggregator());
@@ -256,11 +263,13 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 	}
 
 	@Bean
+	@StepScope
 	public PagamentoMateraHeaderCallback headerCallback() {
 		return new PagamentoMateraHeaderCallback();
 	}
 
 	@Bean
+	@StepScope
 	public PagamentoMateraFooterCallback footerCallback() {
 		return new PagamentoMateraFooterCallback();
 	}
@@ -278,9 +287,9 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 				.setNames(new String[] { "sequencial", "numOriginal", "dataTranscao", "mti", "codigoProcessamento", "codigoAutorizacao", "horaTransacao" , "numeroTerminal", "idCliente", "dataExpiracao", "codigoMoeda", "valorTransacao", "entrada", "codigoPais", "traceNumber", "rrn", "codigoPlanoVenda" , "idBranch" , "idDepartamento" , "tipoTecnologia", "posData", "metodoVerificacao", "numCartao", "sourceInterface", "fieldLength" , "field" , "codigoResposta" , "idTransacaoVisa" , "dadosRede" , "dataLiquidacao" , "idSeguranca" , "codigoIdentificacao" , "mcc", "idPromocao", "valorEntrada" , "taxaEmbarque" , "valorReembolso" , "idRequirente" , "idBin" , "idTransacao" , "taxaCambio" , "nomeEC", "dataOriginalTransacao" , "horaOriginalTransacao" , "idOriginalTransacao", "rrnOriginal" , "codigoServico" , "merchante" , "coBinGroup" , "cmsProduct" , "transactionType" , "binGroup" , "tipoConta" , "dCCIndicator" , "reconciliationAmount" , "reconciliationCurrency" , "amountAdditionals" , "amountAdditionalsCurrency" , "dCCExchangeForReconciliation" , "dCCExchangeRateWithMarkup" , "dCCExchangeRateWithoutMarkup" });
 		return fieldExtractor;
 	}
-
-//------------------------------------------------------------------------------------//
-
+//end---------/
+		
+//job------------------------------------------------------------------------------------//
 	@Bean
 	public Job importUserJob(JobCompletionNotificationListener listener, Step step1) {
 		return jobBuilderFactory.get("importUserJob")
@@ -320,5 +329,5 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 				.taskExecutor(taskExecutor())
 				.build();
 	}	
-	
+//end-------------/	
 }

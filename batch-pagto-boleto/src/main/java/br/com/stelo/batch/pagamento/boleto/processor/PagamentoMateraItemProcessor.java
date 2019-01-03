@@ -1,26 +1,27 @@
 package br.com.stelo.batch.pagamento.boleto.processor;
 
-import java.math.BigDecimal;
+//import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
-import br.com.stelo.batch.helper.MensagemDomain;
+//import br.com.stelo.batch.helper.MensagemDomain;
 import br.com.stelo.batch.helper.PagamentoStatusType;
 import br.com.stelo.batch.helper.SubMotivoFonteRejeicao;
 import br.com.stelo.batch.pagamento.boleto.model.PagamentoMatera;
 import br.com.stelo.batch.pagamento.boleto.model.RegistroArquivoTiff;
 import br.com.stelo.batch.pagamento.boleto.model.TipoRegistroMatera;
-import br.com.stelo.batch.pagamento.boleto.repository.dao.IInconsistenciaBoletoDAO;
+//import br.com.stelo.batch.pagamento.boleto.repository.dao.IInconsistenciaBoletoDAO;
 import br.com.stelo.batch.pagamento.boleto.repository.dao.IPagamentoDAO;
 import br.com.stelo.batch.pagamento.boleto.repository.dao.IPedidoDAO;
 import br.com.stelo.batch.pagamento.boleto.repository.dao.IVendaDAO;
-import br.com.stelo.batch.pagamento.boleto.repository.entity.InconsistenciaBoletoEntity;
+//import br.com.stelo.batch.pagamento.boleto.repository.entity.InconsistenciaBoletoEntity;
 import br.com.stelo.batch.pagamento.boleto.repository.entity.PagamentoEntity;
 import br.com.stelo.batch.pagamento.boleto.repository.entity.PedidoEntity;
 import br.com.stelo.batch.pagamento.boleto.repository.entity.VendaEntity;
@@ -31,13 +32,16 @@ public class PagamentoMateraItemProcessor implements ItemProcessor<PagamentoMate
 
 	private static final Logger log = LoggerFactory.getLogger(PagamentoMateraItemProcessor.class);
 
-	private static final MensagemDomain PEDIDO_PAGO = new MensagemDomain("ERRBT0007");
-	private static final MensagemDomain NAO_ENCONTRADO = new MensagemDomain("ERRBT0002");
-	private static final MensagemDomain PGTO_CANCELADO = new MensagemDomain("ERRBT0003");
-	private static final MensagemDomain PGTO_MENOR = new MensagemDomain("ERRBT0005");
-	private static final MensagemDomain PGTO_VENCIDO = new MensagemDomain("ERRBT0006");
-	private static final MensagemDomain ERRO_SISTEMICO = new MensagemDomain("ERRBT0001");
+	//private static final MensagemDomain PEDIDO_PAGO = new MensagemDomain("ERRBT0007");
+	//private static final MensagemDomain NAO_ENCONTRADO = new MensagemDomain("ERRBT0002");
+	//private static final MensagemDomain PGTO_CANCELADO = new MensagemDomain("ERRBT0003");
+	//private static final MensagemDomain PGTO_MENOR = new MensagemDomain("ERRBT0005");
+	//private static final MensagemDomain PGTO_VENCIDO = new MensagemDomain("ERRBT0006");
+	//private static final MensagemDomain ERRO_SISTEMICO = new MensagemDomain("ERRBT0001");
 
+    @Value("#{StepExecution}")
+    private StepExecution stepExecution;
+	
 	@Autowired
 	private IPagamentoDAO pagamentoDAO;
 
@@ -50,8 +54,8 @@ public class PagamentoMateraItemProcessor implements ItemProcessor<PagamentoMate
 	@Autowired
     private ITransacaoService transacaoService;
 	
-	@Autowired
-	private IInconsistenciaBoletoDAO inconsistenciaBoletoDAO;
+	//@Autowired
+	//private IInconsistenciaBoletoDAO inconsistenciaBoletoDAO;
 
 	@Autowired
 	private ILayoutTifService layoutTifService;
@@ -80,10 +84,10 @@ public class PagamentoMateraItemProcessor implements ItemProcessor<PagamentoMate
 				vendaEntity = vendaDAO.getVenda(pagamentoMatera.getIdStelo(), pagamentoMatera.getCodigoPedido());
 
 				if (pagamentoEntity == null || pedidoEntity == null || vendaEntity == null) {
-					log.info("Pedido [{}] nao encontrado, Gerando inconsistencia...",
+					log.error("Pedido [{}] nao encontrado, Gerando inconsistencia...",
 							pagamentoMatera.getCodigoPedido());
-					geraInconsistencia(pagamentoMatera, pagamentoEntity, pedidoEntity, vendaEntity,
-							SubMotivoFonteRejeicao.PAGAMENTO_NAO_ENCONTRADO, NAO_ENCONTRADO);
+					//geraInconsistencia(pagamentoMatera, pagamentoEntity, pedidoEntity, vendaEntity,
+					//		SubMotivoFonteRejeicao.PAGAMENTO_NAO_ENCONTRADO, NAO_ENCONTRADO);
 				} else {
 
 					final int COMPARAR_VALOR = Double.compare(pagamentoMatera.getValor(), pagamentoEntity.getVR_PGTO());
@@ -92,46 +96,52 @@ public class PagamentoMateraItemProcessor implements ItemProcessor<PagamentoMate
 							|| PagamentoStatusType.EMCANCELAMENTO.getValue()
 									.equals(pagamentoEntity.getCD_STTUS_PGTO())) {
 						log.info("Pagamento Cancelado ou Em Cancelamento, Gerando inconsistencia...");
-						geraInconsistencia(pagamentoMatera, pagamentoEntity, pedidoEntity, vendaEntity,
-								SubMotivoFonteRejeicao.PAGAMENTO_DE_PEDIDO_CANCELADO, PGTO_CANCELADO);
+						//geraInconsistencia(pagamentoMatera, pagamentoEntity, pedidoEntity, vendaEntity,
+						//		SubMotivoFonteRejeicao.PAGAMENTO_DE_PEDIDO_CANCELADO, PGTO_CANCELADO);
 					} else if (PagamentoStatusType.APROVADA.getValue().equals(pagamentoEntity.getCD_STTUS_PGTO())) {
 						log.info("Pagamento Duplicado, Gerando inconsistencia...");
-						geraInconsistencia(pagamentoMatera, pagamentoEntity, pedidoEntity, vendaEntity,
-								SubMotivoFonteRejeicao.PAGAMENTO_DUPLICADO, PEDIDO_PAGO);
+						//geraInconsistencia(pagamentoMatera, pagamentoEntity, pedidoEntity, vendaEntity,
+						//		SubMotivoFonteRejeicao.PAGAMENTO_DUPLICADO, PEDIDO_PAGO);
 					} else if (COMPARAR_VALOR < 0) {
 						log.info("Pagamento com valor menor, Gerando inconsistencia...");
-						geraInconsistencia(pagamentoMatera, pagamentoEntity, pedidoEntity, vendaEntity,
-								SubMotivoFonteRejeicao.A_MENOR, PGTO_MENOR);
+						//geraInconsistencia(pagamentoMatera, pagamentoEntity, pedidoEntity, vendaEntity,
+						//		SubMotivoFonteRejeicao.A_MENOR, PGTO_MENOR);
 						cancelaPagamento(pagamentoMatera, pagamentoEntity, pedidoEntity,
 								SubMotivoFonteRejeicao.A_MENOR);
 					} else if (isPagamentoRealizadoAposVencimento(pagamentoMatera, pagamentoEntity)) {
 						log.info("Pagamento vencido, Gerando inconsistencia...");
-						geraInconsistencia(pagamentoMatera, pagamentoEntity, pedidoEntity, vendaEntity,
-								SubMotivoFonteRejeicao.VENCIDO, PGTO_VENCIDO);
+						//geraInconsistencia(pagamentoMatera, pagamentoEntity, pedidoEntity, vendaEntity,
+						//		SubMotivoFonteRejeicao.VENCIDO, PGTO_VENCIDO);
 						cancelaPagamento(pagamentoMatera, pagamentoEntity, pedidoEntity,
 								SubMotivoFonteRejeicao.VENCIDO);
 					} else {
 						transacaoService.processaPagamentoAprovado(pagamentoMatera, pagamentoEntity, vendaEntity, pedidoEntity);
-					}
-
-					//TODO:tratar incremento
-					Integer itensProcessados = 1;
-					
-					registroArquivoTiff = layoutTifService.getRegistroArquivoTiff(pagamentoEntity, pedidoEntity, itensProcessados, nomeFantasia);
-					log.info("### registroArquivoTiff: "+registroArquivoTiff.toString());
-					
+                        //
+						Object o_itensProcessados = stepExecution.getExecutionContext().get("itensProcessados");
+					    Integer itensProcessados = (o_itensProcessados==null) ? 1 : (Integer)o_itensProcessados;
+					    itensProcessados++;
+					    stepExecution.getExecutionContext().put("itensProcessados", itensProcessados);
+                        //  
+						Object o_valorTotalProcessado = stepExecution.getExecutionContext().get("valorTotalProcessado");
+					    Double valorTotalProcessado = (o_valorTotalProcessado==null) ? 0 : (Double)o_valorTotalProcessado;
+					    valorTotalProcessado+=pagamentoMatera.getValor();
+					    stepExecution.getExecutionContext().put("valorTotalProcessado", valorTotalProcessado);
+                        //					    
+					    registroArquivoTiff = layoutTifService.getRegistroArquivoTiff(pagamentoEntity, pedidoEntity, itensProcessados, nomeFantasia);
+					    log.info("### registroArquivoTiff: "+registroArquivoTiff.toString());
+					}					
                     
 				}
 			} catch (Exception ex) {
 				log.error("Erro inesperado com o registro :" + pagamentoMatera, ex);
-				geraInconsistencia(pagamentoMatera, pagamentoEntity, pedidoEntity, vendaEntity,
-						SubMotivoFonteRejeicao.ERRO_SISTEMICO, ERRO_SISTEMICO);
+				//geraInconsistencia(pagamentoMatera, pagamentoEntity, pedidoEntity, vendaEntity,
+				//		SubMotivoFonteRejeicao.ERRO_SISTEMICO, ERRO_SISTEMICO);
 			}
 
 		}
 		return registroArquivoTiff;
 	}
-	
+/*	
 	private void geraInconsistencia(final PagamentoMatera pagamentoMatera, final PagamentoEntity pagamentoEntity,
 			final PedidoEntity pedidoEntity, final VendaEntity vendaEntity,
 			final SubMotivoFonteRejeicao subMotivoFonteRejeicao, final MensagemDomain descricaoRejeicao) {
@@ -171,7 +181,7 @@ public class PagamentoMateraItemProcessor implements ItemProcessor<PagamentoMate
 		log.info(inconsistencia.toString());
 		inconsistenciaBoletoDAO.inserir(inconsistencia);
 	}
-
+*/
 	private boolean isPagamentoRealizadoAposVencimento(final PagamentoMatera pagamentoMatera,
 			final PagamentoEntity pagamentoEntity) {
 		log.info("Verificando se a data do Pagamento é posterior a data de Vencimento");
