@@ -8,7 +8,7 @@ curl --header "Content-Type: application/json" --request POST --data '{
    "alerts":[
       {
          "status":"status1",
-	 "labels": {"label": "label1"},
+	 "labels": {"alertname": "label1"},
 	 "annotations": {"annotation": "annotation1"},
 	 "startsAt":"1",
          "endsAt":"2",
@@ -16,7 +16,7 @@ curl --header "Content-Type: application/json" --request POST --data '{
       },
       {
          "status":"status2",
-	 "labels": {"label": "label1"},
+	 "labels": {"alertname": "label1"},
 	 "annotations": {"annotation": "annotation1"},
          "startsAt":"3",
          "endsAt":"4",
