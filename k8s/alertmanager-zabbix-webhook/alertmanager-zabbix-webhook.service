@@ -1,0 +1,11 @@
+[Unit]
+Description=alert manager
+After=network.target
+
+[Service]
+Restart=always
+WorkingDirectory=/opt/alertmanager-zabbix-webhook/
+ExecStart=/opt/alertmanager-zabbix-webhook/alertmanager-zabbix-webhook -config=config.yaml 
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=alert manager
+After=network.target
+
+[Service]
+Restart=always
+WorkingDirectory=/opt/kube-state-metrics/
+ExecStart=/usr/bin/kube-state-metrics --port=8085 --telemetry-port=8086 --kubeconfig=/etc/kubernetes/admin.conf 
+
+[Install]
+WantedBy=multi-user.target

@@ -16,7 +16,7 @@ curl --header "Content-Type: application/json" --request POST --data '{
       },
       {
          "status":"status2",
-	 "labels": {"alertname": "label1"},
+	 "labels": {"alertname": "label2"},
 	 "annotations": {"annotation": "annotation1"},
          "startsAt":"3",
          "endsAt":"4",

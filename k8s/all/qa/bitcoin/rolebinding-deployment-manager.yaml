@@ -1,0 +1,13 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: bc-deployment-manager-binding
+  namespace: bitcoin
+subjects:
+- kind: User
+  name: kauann
+  apiGroup: ""
+roleRef:
+  kind: Role
+  name: bc-deployment-manager
+  apiGroup: ""

@@ -1,0 +1,106 @@
+journalctl -f -u kubelet
+rpm -ql kubelet-1.14.0-0.x86_64
+#####
+
+10.150.42.167 
+/jobs/prd/GEPDD0005 
+
+10.150.251.61
+/app/standalone/credenciamento-boleto-batch/
+
+http://rundeck.stelo.local:4440
+http://wiki.stelo.local/infrawiki/index.php/P%C3%A1gina_principal
+http://devwiki.stelo.local/devwiki/index.php/P%C3%A1gina_principal
+
+zocker01.stelo.intranet
+
+https://sd-stelo.atlassian.net/servicedesk/customer/portal/1/create/108
+esse é o geral: https://sd-stelo.atlassian.net/servicedesk/customer/portal/1/group/9
+
+http://zabbix-homolog.hml1.stelo.local
+http://zabbix.stelo.intranet
+
+
+resmon.exe: app para monitoramento de processos no win10
+
+carlos.fernandes-adm@hquantum01.qa.stelo.intranet
+
+export no_proxy=".stelo.local, .stelo.intranet, 10.0.0.0/8, 127.0.0.1, localhost"
+export http_proxy=http://proxy.stelo.intranet:3130/
+export https_proxy=http://proxy.stelo.intranet:3130/
+
+
+export no_proxy=".stelo.local, .stelo.intranet, 10.0.0.0/8, 127.0.0.1, localhost, 10.150.230.4"
+
+export http_proxy=http://proxy.qa.stelo.intranet:3130/
+export https_proxy=http://proxy.qa.stelo.intranet:3130/
+
+export HTTP_PROXY=http://proxy.qa.stelo.intranet:3130/
+export HTTPS_PROXY=http://proxy.qa.stelo.intranet:3130/
+
+http_proxy https_proxy HTTP_PROXY HTTPS_PROXY
+
+
+ssh -L 8001:127.0.0.1:8001 10.150.230.17
+
+###--------------------------------------------------------------------------
+
+#1
+sudo yum install -y golang runc git ostree-devel gpgme-devel device-mapper-devel btrfs-progs-devel libassuan-devel libseccomp-devel automake autoconf gettext-devel libtool libxslt libsemanage-devel bison libcap-devel podman
+
+#2
+go get -u github.com/containers/libpod/cmd/podman
+
+#3
+git clone https://github.com/shadow-maint/shadow; cd shadow; ./autogen.sh --prefix=/usr --enable-man; make && sudo make -C src install
+
+#4
+git clone https://github.com/rootless-containers/slirp4netns.git; cd slirp4netns; ./autogen.sh; ./configure --prefix=/usr; make -j $(nproc); sudo make install
+
+#5
+sudo bash -c 'echo 10000 > /proc/sys/user/max_user_namespaces'
+
+#6
+sudo bash -c "echo $(whoami):110000:65536 > /etc/subuid"
+
+#7
+sudo bash -c "echo $(whoami):110000:65536 > /etc/subgid"
+
+#8
+go/bin/podman pull alpine
+
+#9
+go/bin/podman run --net host --rm -ti alpine echo hello
+
+hello
+
+#### ----------------------------------------------------------------------------
+# stelo docker registry on-premise
+
+curl http://registry.stelo.intranet:5000/v2/_catalog
+curl http://registry.stelo.intranet:5000/v2/<image_name>/tags/list
+
+curl registry.rancher.stelo.intranet:30000/v2/_catalog
+curl registry.rancher.stelo.intranet:30000/v2/linktermseller/tags/list
+
+go get github.com/genuinetools/reg
+./reg server --force-non-ssl --port 5080 --registry http://registry.stelo.intranet:5000
+./reg server --force-non-ssl --registry http://registry.stelo.intranet:5000
+
+
+#using podman:
+podman pull --tls-verify=false registry.stelo.intranet:5000/vendedor-altcad:01
+podman pull registry.stelo.intranet:5000/vendedor-altcad:01
+
+
+podman export $(podman create registry.stelo.intranet:5000/vendedor-altcad:01) | tar -C rootfs -xvf -
+
+
+docker run --rm --name devj7 -v <SEU_DIRETORIO_DE_PROJETOS_AONDE_O_STELO_MAIN_ESTA>/:/home/projects/ -w /home/projects/stelo-main devj:7 mvn clean install
+
+###############################################################
+git push https://user:passw@github.com/<repo>/<project>.git
+
+
+tcpdump -i any -c5 -nn port 80
+ngrep -tqd any 'a6-hoggish1.+PagSeguro-media-transacoes' tcp and dst port 80

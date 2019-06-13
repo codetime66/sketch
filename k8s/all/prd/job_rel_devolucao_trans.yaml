@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-rel-devolucao-transacao
+  namespace: jobs
+spec:
+  template:
+    spec:
+      containers:
+      - name: job-rel-devolucao-transacao
+        image: registry.stelo.intranet:5000/job-rel-devolucao-transacao:01
+      restartPolicy: OnFailure

@@ -1,0 +1,9 @@
+groups:
+- name: alert_rules_jobs_bitcoin
+  rules:
+  - alert: btc-visao-geral-tif
+    expr: kube_job_status_failed{job_name="btc-visao-geral-tif",namespace="bitcoin"} > 0 
+    labels:
+      severity: critical
+    annotations:
+      summary: job failure

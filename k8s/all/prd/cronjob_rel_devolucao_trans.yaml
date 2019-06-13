@@ -1,0 +1,15 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: job-rel-devolucao-transacao
+  namespace: jobs
+spec:
+  schedule: "00 11 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: job-rel-devolucao-transacao
+            image: registry.stelo.intranet:5000/job-rel-devolucao-transacao:01
+          restartPolicy: Never

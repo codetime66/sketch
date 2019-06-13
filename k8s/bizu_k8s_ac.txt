@@ -1,0 +1,42 @@
+#1
+
+copiar <username>.crt and <username>.key para /home/$USER/.certs/
+
+#2
+
+kubectl config set-credentials <username> --client-certificate=/home/$USER/.certs/<username>.crt  --client-key=/home/$USER/.certs/<username>.key
+kubectl config set-context <username>-context --cluster=kubernetes --namespace=<namespace> --user=<username>
+
+
+kubectl config get-contexts
+
+kubectl config use-context caf-context 
+ 
+kubectl --context=caf-context get pods
+
+
+#inserir em "/home/$USER/.kube/config":
+
+- cluster:
+    insecure-skip-tls-verify: true
+    server: https://10.150.230.17:6443
+  name: kubernetes
+
+  
+  
+  
+#################################
+
+#1
+
+copiar kauann.crt and kauann.key para /home/kauann/.certs/
+
+#2
+
+kubectl config set-credentials kauann --client-certificate=/home/kauann/.certs/kauann.crt  --client-key=/home/kauann/.certs/kauann.key
+
+#3
+
+kubectl config set-context kauann-context --cluster=kubernetes --namespace=bitcoin --user=kauann
+
+  

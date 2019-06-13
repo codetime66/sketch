@@ -1,0 +1,109 @@
+kubectl --kubeconfig /mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec gsurf-svc-5c4dd8c744-vwmk2 cat /etc/resolv.conf
+kubectl --kubeconfig /mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get pods
+kubectl --kubeconfig /mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config logs gsurf-svc-5c4dd8c744-vwmk2
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config  delete pod -n kube-system  -l k8s-app=kube-dns
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config apply -f busybox.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config apply -f coredns-k8s-default.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config apply -f coredns-k8s-test.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config apply -f dns-caf.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config apply -f gsurf-svc-prd.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config create -f coredns-k8s-default.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config create -f kubednscm.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config delete -f busybox.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config delete -f coredns-k8s-default.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config delete -f coredns-k8s-test.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config delete -f dns-caf.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config delete -f gsurf-svc-prd.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config delete -f kubednscm.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config delete kubednscm.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config delete pod -n kube-system  -l k8s-app=kube-dns
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config delte -f coredns-k8s-test.yaml 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config describe coredns -n=kube-
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config describe coredns-fb8b8dccf-bjmz2 --namespace=kube-system
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config describe coredns-fb8b8dccf-bjmz2 -n=kube-system
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config describe pods coredns-fb8b8dccf-bjmz2 --namespace=kube-system
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config edit configmap -n kube-system coredns
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec -ti busybox -- 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec -ti busybox -- cat /etc/resolv.conf 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec -ti busybox -- ns
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec -ti busybox -- nslookup brasa01.stelo.intranet
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec -ti busybox -- nslookup kubernetes.default
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec -ti busybox -- ping 10.150.251.50
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec -ti busybox -- ping 10.96.0.10
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec -ti busybox -- ping brasa01.stelo.intranet
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec -ti dns-caf -- cat /etc/resolv.conf 
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec -ti dns-caf -- ping brasa01.stelo.intranet
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec -ti gsurf-svc-5c4dd8c744-vwmk2 -- cat /etc/resolv.conf
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec gsurf-svc-5c4dd8c744-vwmk2 cat /etc/resolv.conf
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec gsurf-svc-5c4dd8c744-vwmk2 ls
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config exec link-terminal-pax-7fd9c47dc8-dt8qt cat /etc/resolv.conf
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get configmaps --all-namespaces
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get configmaps coredns --all-namespaces
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get configmaps coredns --namespace=kube-system
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get configmaps coredns --namespace=kube-system -o yaml
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get configmaps coredns --namespace=kube-system -o yaml > coredns-k8s-default.yaml
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get nodes
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get pods
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get pods --all-namespaces
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get pods --all-namespaces -o wide
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get pods --namespace=kube-system -l k8s-app=coredns
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get pods --namespace=kube-system -l k8s-app=kube-dns
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config logs --namespace=kube-system $(kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get pods --namespace=kube-system -l k8s-app=kube-dns -o name | head -1)
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config logs --namespace=kube-system $(kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config get pods --namespace=kube-system -l k8s-app=kube-dns -o name | head -1) -c kubedns
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config logs --namespace=kube-system $(kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o name | head -1)
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config logs --namespace=kube-system $(kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o name | head -1) -c kubedns
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config logs coredns-fb8b8dccf-8x5sc --namespace=kube-system
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config logs gsurf-svc-5c4dd8c744-tlrhd
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config logs gsurf-svc-5c4dd8c744-tlrhd
+kubectl --kubeconfig=/mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zubernetes/z01/config logs gsurf-svc-5c4dd8c744-vwmk2
+kubectl apply -f busybox-hml.yaml 
+kubectl apply -f busybox.yaml 
+kubectl delete pod -n kube-system  -l k8s-app=kube-dns
+kubectl edit configmap -n kube-system coredns
+kubectl exec -it busybox -- cat /etc/resolv.conf 
+kubectl exec -it busybox -- nslookup hbutanclan01.qa.stelo.intranet
+kubectl exec -it busybox -- nslookup kubernetes.default
+kubectl get pods
+kubectl get pods --all-namespaces
+kubectl get pods --namespace=kube-system -l k8s-app=kube-dns
+kubectl logs --namespace=kube-system $(kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o name | head -1)
+kubectl logs --namespace=kube-system $(kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o name | head -1) -c kubedns
+
+#service discovery (into the k8s cluster)
+kubectl exec -ti mytool-fdf57d5bb-58jm8 -- curl -v http://gsurf-svc.credenciamento:7123/gsurf-svc/token
+kubectl exec -ti mytool-fdf57d5bb-58jm8 -- curl -v http://cadu.credenciamento:8080/cadu-app/webservices/preCadastroMPOS?wsdl
+
+#scraping cadvisor metrics in hquantum01 (qa master node):
+curl -v -k https://10.150.230.17:6443/api/v1/nodes/hquilombo01.qa.stelo.intranet/proxy/metrics/cadvisor
+
+#setting up an anonymous:
+kubectl create clusterrolebinding cluster-system-anonymous --clusterrole=cluster-admin --user=system:anonymous
+#using k8s server api to collecting kubelet metrics:
+kubectl exec -ti mytool-fdf57d5bb-58jm8 -- curl -v -k https://kubernetes.default.svc:443/api/v1/nodes/hquilombo01.qa.stelo.intranet/proxy/metrics/cadvisor
+kubectl --kubeconfig /mnt/c/Users/carlos.fernandes/projects/dockerland/kube/zasters/z01/config exec -ti mytool-fdf57d5bb-mmrht -- curl -k https://kubernetes.default.svc:443/api/v1/nodes/zorker04.stelo.intranet/proxy/metrics/cadvisor
+
+#check node health:
+#curl localhost:10248/healthz
+
+#logs on the nodes:
+#/var/log/containers/
+#/var/log/pods/ 
+
+#using api server directly from k8s rest api:
+APISERVER=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
+TOKEN=$(kubectl get secret $(kubectl get serviceaccount default -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode )
+curl $APISERVER/api --header "Authorization: Bearer $TOKEN" --insecure
+
+#cadvisor (as daemonset):
+#http://[k8s_node]:[k8s_nodeport]/metrics
+
+#prometheus example: http://hquantum01.qa.stelo.intranet:9090
+#host: hquantum01.qa.stelo.intranet
+#/opt/prometheus-2.10.0.linux-amd64
+#samples:
+avg(rate(container_memory_usage_bytes[5m])) by (job, service)
+avg(rate(container_memory_usage_bytes[5m])) by (container_label_io_kubernetes_pod_name)
+container_cpu_usage_seconds_total
+container_label_io_kubernetes_container_name="gsurf-svc"
+rate(container_memory_usage_bytes{container_label_io_kubernetes_container_name="gsurf-svc"}[1m])
+rate(container_cpu_usage_seconds_total{container_label_io_kubernetes_container_name="gsurf-svc"}[1m])
