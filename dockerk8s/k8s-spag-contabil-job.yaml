@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: spag-contabil
+  namespace: spag 
+  labels:
+    app: spag-contabil
+spec:
+  type: NodePort
+  ports:
+    - port: 9096
+      protocol: TCP
+      targetPort: 9096
+      nodePort: 30008
+  selector:
+    app: spag-contabil
+---
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  namespace: spag 
+  name: spag-contabil
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spag-contabil
+  template:
+    metadata:
+      labels:
+        app: spag-contabil
+    spec:
+      containers:
+      - name: spag-contabil
+        image: registry.stelo.intranet:5000/spag-contabil:01
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9096
+          protocol: TCP
+        volumeMounts:
+        - name: silocarquivos
+          mountPath: /opt/silocarquivos/
+      volumes:
+      - name: silocarquivos
+        hostPath:
+          path: /opt/silocarquivos/
+
