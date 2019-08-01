@@ -10,6 +10,13 @@ import (
     "time"
 
     "k8s.io/client-go/kubernetes"
+
+    "strconv"
+    "strings"
+    "log"
+    "net/http"
+    "github.com/prometheus/client_golang/prometheus"
+    "github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // PodMetricsList : PodMetricsList
@@ -38,6 +45,22 @@ type PodMetricsList struct {
     } `json:"items"`
 }
 
+var (
+	memUsage = prometheus.NewGaugeVec(
+             prometheus.GaugeOpts{
+                  Namespace: "k8s_metrics",
+                  Name:      "container_memory_usage",
+                  Help:      "container memory usage",
+             },
+             []string{"container", "unit"},
+        )
+)
+
+func init() {
+	prometheus.MustRegister(memUsage)
+        prometheus.MustRegister(prometheus.NewBuildInfoCollector())
+}
+
 func getMetrics(clientset *kubernetes.Clientset, pods *PodMetricsList) error {
     data, err := clientset.RESTClient().Get().AbsPath("apis/metrics.k8s.io/v1beta1/pods").DoRaw()
     if err != nil {
@@ -54,6 +77,7 @@ func main() {
     } else {
 		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
     }
+    var addr = flag.String("listen-address", ":8080", "The address to listen on for HTTP requests.")
     flag.Parse()
 
     // use the current context in kubeconfig
@@ -72,8 +96,19 @@ func main() {
         panic(err.Error())
     }
     for _, m := range pods.Items {
-        fmt.Println(m.Metadata.Name, m.Metadata.Namespace, m.Timestamp.String(), m.Containers)
+	s_mem_in_kb := strings.TrimSuffix(m.Containers[0].Usage.Memory, "Ki")
+
+	n_mem_in_kb, err := strconv.ParseFloat(s_mem_in_kb, 64)
+        if err != nil {
+            n_mem_in_kb=0
+        }
+
+        fmt.Println(m.Metadata.Name, m.Metadata.Namespace, m.Timestamp.String(), m.Containers, s_mem_in_kb, n_mem_in_kb)
+	memUsage.WithLabelValues(m.Metadata.Name, "kbyte").Add(n_mem_in_kb)
     }
+
+    http.Handle("/metrics", promhttp.Handler())
+    log.Fatal(http.ListenAndServe(*addr, nil))
 }
 
 func homeDir() string {
