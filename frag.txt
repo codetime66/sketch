@@ -1,1 +1,0 @@
--Dlog4j.configurationFile=file:/path.to/log4j.properties

@@ -1,1 +1,0 @@
-http://www.mkyong.com/tutorials/jdbc-tutorials/

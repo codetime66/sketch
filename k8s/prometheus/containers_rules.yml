@@ -1,9 +1,0 @@
-groups:
-- name: cadvisor-k8s
-  rules:
-  - expr: sum(rate(container_cpu_usage_seconds_total{job="cadvisor-k8s", image!="", container_label_io_kubernetes_container_name!=""}[5m])) by (container_label_io_kubernetes_pod_namespace)
-    record: namespace:container_cpu_usage_seconds_total:sum_rate
-  - expr: sum by (container_label_io_kubernetes_pod_namespace, container_label_io_kubernetes_pod_name, container_label_io_kubernetes_container_name) (rate(container_cpu_usage_seconds_total{job="cadvisor-k8s", image!="", container_label_io_kubernetes_container_name!=""}[5m]))
-    record: namespace_pod_name_container_name:container_cpu_usage_seconds_total:sum_rate
-  - expr: sum(container_memory_usage_bytes{job="cadvisor-k8s", image!="", container_label_io_kubernetes_container_name!=""}) by (container_label_io_kubernetes_pod_namespace)
-    record: namespace:container_memory_usage_bytes:sum

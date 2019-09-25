@@ -1,2 +1,0 @@
-#!/bin/bash
-java -jar -Xmx256m -Xms256m -Xss1m -Dhttp.proxyHost=proxy.hml1.stelo.local -Dhttp.proxyPort=3130 -Dhttp.nonProxyHosts='localhost|127.0.0.1|*.intranet|*.local' -Dhttps.proxyHost=proxy.hml1.stelo.local -Dhttps.proxyPort=3130 -Dhttps.nonProxyHosts='localhost|127.0.0.1|*.intranet|*.local' /app/standalone/link-terminal-seller-job/link-terminal-seller-job-1.0-SNAPSHOT.jar --spring.profiles.active=hml
